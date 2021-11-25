@@ -1,0 +1,18 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: vsrv.pb.video.VideoService.CreateVideo
+      post: /vsrv/insert
+      body: "*"
+    - selector: vsrv.pb.video.VideoService.UpdateVideo
+      update: /vsrv/{video_id}/update
+      body: "*"
+    - selector: vsrv.pb.video.VideoService.DeleteVideo
+      delete: /vsrv/{video_id}/delete
+    - selector: vsrv.pb.video.VideoService.GetVideo
+      get: /vsrv/{video_id}/get
+      response:
+    - selector: vsrv.pb.video.VideoService.GetVideoList
+      get: /vsrv/list
