@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package usrv.pb.user;
+option go_package = "mithril-micro/vsrv/api/gen;vsrvpb";
 
 service UserService {
   rpc CreateUser(CreateUserReq) returns (CreateUserRes);
