@@ -13,3 +13,13 @@ services:
     volumes:
       - /data/mongo/db:/data/db
       - /data/mongo/log:/var/log/mongodb
+
+  redis:
+    image: redis 
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./datadir:/data
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./logs:/logs    

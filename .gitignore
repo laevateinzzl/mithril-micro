@@ -2,3 +2,5 @@
 .vscode/settings.json
 .vscode/launch.json
 vsrv/.vscode/settings.json
+dao/datadir/dump.rdb
+gateway/__debug_bin

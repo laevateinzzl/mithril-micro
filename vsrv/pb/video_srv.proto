@@ -1,14 +1,40 @@
 syntax = "proto3";
 
+import "gogo.proto";
+import "annotations.proto";
 package vsrv.pb.video;
-option go_package = "mithril-micro/vsrv/api/gen/v1;vsrvpb";
+option go_package = "vsrvpb";
+
+option (gogoproto.goproto_registration) = true;
 
 service VideoService {
-  rpc CreateVideo(CreateVideoReq) returns (Video);
-  rpc GetVideo(GetVideoReq) returns (Video);
-  rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes);
-  rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes);
-  rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes);
+  rpc CreateVideo(CreateVideoReq) returns (Video){
+    option (google.api.http) = {
+        post: "/video"
+        body: "*"
+      };    
+  };
+  rpc GetVideo(GetVideoReq) returns (Video){
+    option (google.api.http) = {
+        get: "/video/{video_id}"
+      };    
+  };
+  rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes){
+    option (google.api.http) = {
+        get: "/video"
+      };    
+  };
+  rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes){
+    option (google.api.http) = {
+        put: "/video/{video_id}"
+        body: "*"
+      };    
+  };
+  rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes){
+    option (google.api.http) = {
+        delete: "/video/{video_id}"
+      };    
+  };
 }
 
 message Video {

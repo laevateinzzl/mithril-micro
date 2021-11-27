@@ -12,9 +12,14 @@
 #gen video_srv
 
 PROTO_PATH=./pb
-GO_OUT_PATH=./api/gen
+GO_OUT_PATH=./pb
 
 mkdir -p ${GO_OUT_PATH}
-protoc -I=$PROTO_PATH --go_out=paths=source_relative:$GO_OUT_PATH video_srv.proto
-protoc -I=$PROTO_PATH --go-grpc_out=paths=source_relative:$GO_OUT_PATH video_srv.proto
-protoc -I=$PROTO_PATH --grpc-gateway_out=paths=source_relative,grpc_api_configuration=$PROTO_PATH/video_srv.yaml:$GO_OUT_PATH video_srv.proto
+# protoc -I=$PROTO_PATH --go_out=paths=source_relative:$GO_OUT_PATH video_srv.proto
+# protoc -I=$PROTO_PATH --go-grpc_out=paths=source_relative:$GO_OUT_PATH video_srv.proto
+# protoc -I=$PROTO_PATH --grpc-gateway_out=paths=source_relative,grpc_api_configuration=$PROTO_PATH/video_srv.yaml:$GO_OUT_PATH video_srv.proto
+
+# protoc -I=$PROTO_PATH -I=$GOPATH/src -I=$GOPATH/src/mithril-micro/shared/third_party_pb --gogo_out=plugins=grpc,=paths=source_relative:$GO_OUT_PATH video_srv.proto
+# protoc -I=$PROTO_PATH -I=$GOPATH/src -I=$GOPATH/src/mithril-micro/shared/third_party_pb --grpc-gateway_out=paths=source_relative,grpc_api_configuration=$PROTO_PATH/video_srv.yaml:$GO_OUT_PATH video_srv.proto
+protoc -I=$PROTO_PATH -I=$GOPATH/src/mithril-micro/shared/third_party_pb/ --grpc-gateway_out=paths=source_relative:$GO_OUT_PATH video_srv.proto
+# protoc -I=$PROTO_PATH -I=$GOPATH/src --grpc-gateway_out=paths=source_relative:$GO_OUT_PATH video_srv.proto

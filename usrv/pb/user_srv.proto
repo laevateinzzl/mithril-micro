@@ -22,6 +22,7 @@ message User {
     Female = 2;
   }
   Gender gender = 7;
+  string nickname = 8;
 }
 
 message CreateUserReq {
@@ -29,6 +30,7 @@ message CreateUserReq {
   string password = 3;
   string phone = 4;
   string avatar = 5;
+  string nickname = 6;
 }
 
 message CreateUserRes { string msg = 1; }
@@ -39,6 +41,7 @@ message UpdateUserReq {
   string password = 3;
   string phone = 4;
   string avatar = 5;
+  string nickname = 6;
 }
 
 message UpdateUserRes { bool ok = 1; }
