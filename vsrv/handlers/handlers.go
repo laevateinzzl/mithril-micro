@@ -13,6 +13,8 @@ import (
 
 // NewService returns a naïve, stateless implementation of Service.
 func NewService() pb.VideoServiceServer {
+	r := RegisterToServer()
+	r.Register()
 	return videoserviceService{}
 }
 
@@ -20,7 +22,7 @@ type videoserviceService struct{}
 
 func (s videoserviceService) CreateVideo(ctx context.Context, in *pb.CreateVideoReq) (*pb.Video, error) {
 	var resp pb.Video = pb.Video{
-		VideoId:   primitive.NewObjectID().String(),
+		VideoId:   primitive.NewObjectID().Hex(),
 		Title:     in.Title,
 		Summary:   in.Summary,
 		CreatedAt: time.Now().Unix(),
@@ -33,7 +35,6 @@ func (s videoserviceService) CreateVideo(ctx context.Context, in *pb.CreateVideo
 	_, err := c.InsertOne(ctx, resp)
 	if err != nil {
 		log.Fatal(err)
-		panic(err)
 	}
 
 	return &resp, nil
