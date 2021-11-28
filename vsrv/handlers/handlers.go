@@ -2,8 +2,13 @@ package handlers
 
 import (
 	"context"
+	"log"
+	"time"
 
+	"mithril-micro/vsrv/dao"
 	pb "mithril-micro/vsrv/pb"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // NewService returns a naïve, stateless implementation of Service.
@@ -14,12 +19,23 @@ func NewService() pb.VideoServiceServer {
 type videoserviceService struct{}
 
 func (s videoserviceService) CreateVideo(ctx context.Context, in *pb.CreateVideoReq) (*pb.Video, error) {
-	var resp pb.Video
-	return &resp, nil
-}
+	var resp pb.Video = pb.Video{
+		VideoId:   primitive.NewObjectID().String(),
+		Title:     in.Title,
+		Summary:   in.Summary,
+		CreatedAt: time.Now().Unix(),
+		Poster:    in.Poster,
+		Url:       in.Url,
+	}
 
-func (s videoserviceService) GetVideo(ctx context.Context, in *pb.GetVideoReq) (*pb.Video, error) {
-	var resp pb.Video
+	c := dao.NewCl()
+
+	_, err := c.InsertOne(ctx, resp)
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+
 	return &resp, nil
 }
 
@@ -35,5 +51,10 @@ func (s videoserviceService) UpdateVideo(ctx context.Context, in *pb.UpdateVideo
 
 func (s videoserviceService) DeleteVideo(ctx context.Context, in *pb.DeleteVideoReq) (*pb.DeleteVideoRes, error) {
 	var resp pb.DeleteVideoRes
+	return &resp, nil
+}
+
+func (s videoserviceService) GetVideo(ctx context.Context, in *pb.GetVideoReq) (*pb.Video, error) {
+	var resp pb.Video
 	return &resp, nil
 }

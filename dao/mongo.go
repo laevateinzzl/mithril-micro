@@ -12,7 +12,7 @@ import (
 func NewMgoDB() *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(""))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://root:admin@localhost:27017"))
 	if err != nil {
 		log.Fatal(err)
 	}

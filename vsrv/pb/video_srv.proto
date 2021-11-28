@@ -1,44 +1,21 @@
 syntax = "proto3";
 
-import "gogo.proto";
-import "annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 package vsrv.pb.video;
 option go_package = "vsrvpb";
 
 option (gogoproto.goproto_registration) = true;
 
 service VideoService {
-  rpc CreateVideo(CreateVideoReq) returns (Video){
-    option (google.api.http) = {
-        post: "/video"
-        body: "*"
-      };    
-  };
-  rpc GetVideo(GetVideoReq) returns (Video){
-    option (google.api.http) = {
-        get: "/video/{video_id}"
-      };    
-  };
-  rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes){
-    option (google.api.http) = {
-        get: "/video"
-      };    
-  };
-  rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes){
-    option (google.api.http) = {
-        put: "/video/{video_id}"
-        body: "*"
-      };    
-  };
-  rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes){
-    option (google.api.http) = {
-        delete: "/video/{video_id}"
-      };    
-  };
+  rpc CreateVideo(CreateVideoReq) returns (Video);
+  rpc GetVideo(GetVideoReq) returns (Video);
+  rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes);
+  rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes);
+  rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes);
 }
 
 message Video {
-  int64 video_id = 1;
+  string video_id = 1;
   string title = 2;
   string summary = 3;
   int64 created_at = 4;
@@ -54,7 +31,7 @@ message CreateVideoReq {
 }
 
 message UpdateVideoReq {
-  int64 video_id = 1;
+  string video_id = 1;
   string title = 2;
   string summary = 3;
   string poster = 4;
@@ -71,8 +48,8 @@ message GetVideoListRes { repeated Video videos = 1; }
 
 message UpdateVideoRes { bool ok = 1; }
 
-message DeleteVideoReq { int64 video_id = 1; }
+message DeleteVideoReq { string video_id = 1; }
 
 message DeleteVideoRes { bool ok = 1; }
 
-message GetVideoReq { int64 video_id = 1; }
+message GetVideoReq { string video_id = 1; }

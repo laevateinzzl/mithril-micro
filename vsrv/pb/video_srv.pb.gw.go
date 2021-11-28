@@ -83,7 +83,7 @@ func request_VideoService_GetVideo_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "video_id")
 	}
 
-	protoReq.VideoId, err = runtime.Int64(val)
+	protoReq.VideoId, err = runtime.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "video_id", err)
@@ -110,7 +110,7 @@ func local_request_VideoService_GetVideo_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "video_id")
 	}
 
-	protoReq.VideoId, err = runtime.Int64(val)
+	protoReq.VideoId, err = runtime.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "video_id", err)
@@ -181,7 +181,7 @@ func request_VideoService_UpdateVideo_0(ctx context.Context, marshaler runtime.M
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "video_id")
 	}
 
-	protoReq.VideoId, err = runtime.Int64(val)
+	protoReq.VideoId, err = runtime.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "video_id", err)
@@ -216,7 +216,7 @@ func local_request_VideoService_UpdateVideo_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "video_id")
 	}
 
-	protoReq.VideoId, err = runtime.Int64(val)
+	protoReq.VideoId, err = runtime.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "video_id", err)
@@ -243,7 +243,7 @@ func request_VideoService_DeleteVideo_0(ctx context.Context, marshaler runtime.M
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "video_id")
 	}
 
-	protoReq.VideoId, err = runtime.Int64(val)
+	protoReq.VideoId, err = runtime.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "video_id", err)
@@ -270,7 +270,7 @@ func local_request_VideoService_DeleteVideo_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "video_id")
 	}
 
-	protoReq.VideoId, err = runtime.Int64(val)
+	protoReq.VideoId, err = runtime.String(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "video_id", err)
@@ -547,15 +547,15 @@ func RegisterVideoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_VideoService_CreateVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"video"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_VideoService_CreateVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"vsrv"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_VideoService_GetVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"video", "video_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_VideoService_GetVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"vsrv", "video_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_VideoService_GetVideoList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"video"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_VideoService_GetVideoList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"vsrv"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_VideoService_UpdateVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"video", "video_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_VideoService_UpdateVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"vsrv", "video_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_VideoService_DeleteVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"video", "video_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_VideoService_DeleteVideo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"vsrv", "video_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
