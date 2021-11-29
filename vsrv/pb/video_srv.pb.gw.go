@@ -2,11 +2,11 @@
 // source: video_srv.proto
 
 /*
-Package pb is a reverse proxy.
+Package vsrpb is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package pb
+package vsrpb
 
 import (
 	"context"

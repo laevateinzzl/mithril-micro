@@ -43,6 +43,7 @@ enum Gender {
 message User {
   string user_id = 1;
   string email = 2;
+  string nickname = 3;
   string phone = 4;
   string avatar = 5;
   int64 created_at = 6;

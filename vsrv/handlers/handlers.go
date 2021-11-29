@@ -8,7 +8,11 @@ import (
 	"mithril-micro/vsrv/dao"
 	pb "mithril-micro/vsrv/pb"
 
+	usrvpb "mithril-micro/usrv/pb"
+	usrv "mithril-micro/usrv/svc/client/grpc"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"google.golang.org/grpc"
 )
 
 // NewService returns a naïve, stateless implementation of Service.
@@ -29,6 +33,22 @@ func (s videoserviceService) CreateVideo(ctx context.Context, in *pb.CreateVideo
 		Poster:    in.Poster,
 		Url:       in.Url,
 	}
+
+	var user *pb.User
+
+	target := ""
+	conn, _ := grpc.Dial(target, grpc.WithInsecure())
+	client, _ := usrv.New(conn)
+
+	req := usrvpb.GetUserReq{
+
+		UserId: in.UserId,
+	}
+
+	res, _ := client.GetUser(ctx, &req)
+
+	user.Avatar = res.GetAvatar()
+	user.Nickname = res.GetNickname()
 
 	c := dao.NewCl()
 

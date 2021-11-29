@@ -21,6 +21,20 @@ service VideoService {
   rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes);
 }
 
+enum Gender {
+  None = 0;
+  Male = 1;
+  Female = 2;
+}
+
+message User {
+  string user_id = 1;
+  string nickname = 2;
+  string email = 3;
+  string avatar = 4;
+  Gender gender = 5;
+}
+
 message Video {
   string video_id = 1;
   string title = 2;
@@ -28,6 +42,7 @@ message Video {
   int64 created_at = 4;
   string poster = 5;
   string url = 6;
+  User user = 7;
 }
 
 message CreateVideoReq {
@@ -35,6 +50,7 @@ message CreateVideoReq {
   string summary = 2;
   string poster = 3;
   string url = 4;
+  string user_id = 5;
 }
 
 message UpdateVideoReq {
