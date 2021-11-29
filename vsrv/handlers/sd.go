@@ -73,11 +73,41 @@ func (v *VideoAgent) VideoAgentClient() pb.VideoServiceServer {
 
 	var endpoints svc.Endpoints
 
-	factory := v.factoryFor(svc.MakeCreateVideoEndpoint)
-	endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
-	balancer := lb.NewRoundRobin(endpointer)
-	retery := lb.Retry(retryMax, retryTimeout, balancer)
-	endpoints.CreateVideoEndpoint = retery
+	{
+		factory := v.factoryFor(svc.MakeCreateVideoEndpoint)
+		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
+		balancer := lb.NewRoundRobin(endpointer)
+		retery := lb.Retry(retryMax, retryTimeout, balancer)
+		endpoints.CreateVideoEndpoint = retery
+	}
+	{
+		factory := v.factoryFor(svc.MakeGetVideoEndpoint)
+		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
+		balancer := lb.NewRoundRobin(endpointer)
+		retery := lb.Retry(retryMax, retryTimeout, balancer)
+		endpoints.CreateVideoEndpoint = retery
+	}
+	{
+		factory := v.factoryFor(svc.MakeGetVideoListEndpoint)
+		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
+		balancer := lb.NewRoundRobin(endpointer)
+		retery := lb.Retry(retryMax, retryTimeout, balancer)
+		endpoints.CreateVideoEndpoint = retery
+	}
+	{
+		factory := v.factoryFor(svc.MakeUpdateVideoEndpoint)
+		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
+		balancer := lb.NewRoundRobin(endpointer)
+		retery := lb.Retry(retryMax, retryTimeout, balancer)
+		endpoints.CreateVideoEndpoint = retery
+	}
+	{
+		factory := v.factoryFor(svc.MakeDeleteVideoEndpoint)
+		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
+		balancer := lb.NewRoundRobin(endpointer)
+		retery := lb.Retry(retryMax, retryTimeout, balancer)
+		endpoints.CreateVideoEndpoint = retery
+	}
 
 	return endpoints
 }

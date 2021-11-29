@@ -16,7 +16,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
-	pb "mithril-micro/vsrv/pb"
+	pb "mithril-micro/usrv/pb"
 )
 
 // Endpoints collects all of the endpoints that compose an add service. It's
@@ -33,61 +33,52 @@ import (
 // single type that implements the Service interface. For example, you might
 // construct individual endpoints using transport/http.NewClient, combine them into an Endpoints, and return it to the caller as a Service.
 type Endpoints struct {
-	CreateVideoEndpoint  endpoint.Endpoint
-	GetVideoEndpoint     endpoint.Endpoint
-	GetVideoListEndpoint endpoint.Endpoint
-	UpdateVideoEndpoint  endpoint.Endpoint
-	DeleteVideoEndpoint  endpoint.Endpoint
+	CreateUserEndpoint endpoint.Endpoint
+	GetUserEndpoint    endpoint.Endpoint
+	UpdateUserEndpoint endpoint.Endpoint
+	LoginEndpoint      endpoint.Endpoint
 }
 
 // Endpoints
 
-func (e Endpoints) CreateVideo(ctx context.Context, in *pb.CreateVideoReq) (*pb.Video, error) {
-	response, err := e.CreateVideoEndpoint(ctx, in)
+func (e Endpoints) CreateUser(ctx context.Context, in *pb.CreateUserReq) (*pb.CreateUserRes, error) {
+	response, err := e.CreateUserEndpoint(ctx, in)
 	if err != nil {
 		return nil, err
 	}
-	return response.(*pb.Video), nil
+	return response.(*pb.CreateUserRes), nil
 }
 
-func (e Endpoints) GetVideo(ctx context.Context, in *pb.GetVideoReq) (*pb.Video, error) {
-	response, err := e.GetVideoEndpoint(ctx, in)
+func (e Endpoints) GetUser(ctx context.Context, in *pb.GetUserReq) (*pb.User, error) {
+	response, err := e.GetUserEndpoint(ctx, in)
 	if err != nil {
 		return nil, err
 	}
-	return response.(*pb.Video), nil
+	return response.(*pb.User), nil
 }
 
-func (e Endpoints) GetVideoList(ctx context.Context, in *pb.GetVideoListReq) (*pb.GetVideoListRes, error) {
-	response, err := e.GetVideoListEndpoint(ctx, in)
+func (e Endpoints) UpdateUser(ctx context.Context, in *pb.UpdateUserReq) (*pb.UpdateUserRes, error) {
+	response, err := e.UpdateUserEndpoint(ctx, in)
 	if err != nil {
 		return nil, err
 	}
-	return response.(*pb.GetVideoListRes), nil
+	return response.(*pb.UpdateUserRes), nil
 }
 
-func (e Endpoints) UpdateVideo(ctx context.Context, in *pb.UpdateVideoReq) (*pb.UpdateVideoRes, error) {
-	response, err := e.UpdateVideoEndpoint(ctx, in)
+func (e Endpoints) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginRes, error) {
+	response, err := e.LoginEndpoint(ctx, in)
 	if err != nil {
 		return nil, err
 	}
-	return response.(*pb.UpdateVideoRes), nil
-}
-
-func (e Endpoints) DeleteVideo(ctx context.Context, in *pb.DeleteVideoReq) (*pb.DeleteVideoRes, error) {
-	response, err := e.DeleteVideoEndpoint(ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return response.(*pb.DeleteVideoRes), nil
+	return response.(*pb.LoginRes), nil
 }
 
 // Make Endpoints
 
-func MakeCreateVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
+func MakeCreateUserEndpoint(s pb.UserServiceServer) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(*pb.CreateVideoReq)
-		v, err := s.CreateVideo(ctx, req)
+		req := request.(*pb.CreateUserReq)
+		v, err := s.CreateUser(ctx, req)
 		if err != nil {
 			return nil, err
 		}
@@ -95,10 +86,10 @@ func MakeCreateVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
 	}
 }
 
-func MakeGetVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
+func MakeGetUserEndpoint(s pb.UserServiceServer) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(*pb.GetVideoReq)
-		v, err := s.GetVideo(ctx, req)
+		req := request.(*pb.GetUserReq)
+		v, err := s.GetUser(ctx, req)
 		if err != nil {
 			return nil, err
 		}
@@ -106,10 +97,10 @@ func MakeGetVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
 	}
 }
 
-func MakeGetVideoListEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
+func MakeUpdateUserEndpoint(s pb.UserServiceServer) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(*pb.GetVideoListReq)
-		v, err := s.GetVideoList(ctx, req)
+		req := request.(*pb.UpdateUserReq)
+		v, err := s.UpdateUser(ctx, req)
 		if err != nil {
 			return nil, err
 		}
@@ -117,21 +108,10 @@ func MakeGetVideoListEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
 	}
 }
 
-func MakeUpdateVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
+func MakeLoginEndpoint(s pb.UserServiceServer) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(*pb.UpdateVideoReq)
-		v, err := s.UpdateVideo(ctx, req)
-		if err != nil {
-			return nil, err
-		}
-		return v, nil
-	}
-}
-
-func MakeDeleteVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(*pb.DeleteVideoReq)
-		v, err := s.DeleteVideo(ctx, req)
+		req := request.(*pb.LoginReq)
+		v, err := s.Login(ctx, req)
 		if err != nil {
 			return nil, err
 		}
@@ -146,11 +126,10 @@ func MakeDeleteVideoEndpoint(s pb.VideoServiceServer) endpoint.Endpoint {
 // WrapAllExcept(middleware, "Status", "Ping")
 func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...string) {
 	included := map[string]struct{}{
-		"CreateVideo":  {},
-		"GetVideo":     {},
-		"GetVideoList": {},
-		"UpdateVideo":  {},
-		"DeleteVideo":  {},
+		"CreateUser": {},
+		"GetUser":    {},
+		"UpdateUser": {},
+		"Login":      {},
 	}
 
 	for _, ex := range excluded {
@@ -161,20 +140,17 @@ func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...st
 	}
 
 	for inc := range included {
-		if inc == "CreateVideo" {
-			e.CreateVideoEndpoint = middleware(e.CreateVideoEndpoint)
+		if inc == "CreateUser" {
+			e.CreateUserEndpoint = middleware(e.CreateUserEndpoint)
 		}
-		if inc == "GetVideo" {
-			e.GetVideoEndpoint = middleware(e.GetVideoEndpoint)
+		if inc == "GetUser" {
+			e.GetUserEndpoint = middleware(e.GetUserEndpoint)
 		}
-		if inc == "GetVideoList" {
-			e.GetVideoListEndpoint = middleware(e.GetVideoListEndpoint)
+		if inc == "UpdateUser" {
+			e.UpdateUserEndpoint = middleware(e.UpdateUserEndpoint)
 		}
-		if inc == "UpdateVideo" {
-			e.UpdateVideoEndpoint = middleware(e.UpdateVideoEndpoint)
-		}
-		if inc == "DeleteVideo" {
-			e.DeleteVideoEndpoint = middleware(e.DeleteVideoEndpoint)
+		if inc == "Login" {
+			e.LoginEndpoint = middleware(e.LoginEndpoint)
 		}
 	}
 }
@@ -190,11 +166,10 @@ type LabeledMiddleware func(string, endpoint.Endpoint) endpoint.Endpoint
 // functionality.
 func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoint) endpoint.Endpoint, excluded ...string) {
 	included := map[string]struct{}{
-		"CreateVideo":  {},
-		"GetVideo":     {},
-		"GetVideoList": {},
-		"UpdateVideo":  {},
-		"DeleteVideo":  {},
+		"CreateUser": {},
+		"GetUser":    {},
+		"UpdateUser": {},
+		"Login":      {},
 	}
 
 	for _, ex := range excluded {
@@ -205,20 +180,17 @@ func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoi
 	}
 
 	for inc := range included {
-		if inc == "CreateVideo" {
-			e.CreateVideoEndpoint = middleware("CreateVideo", e.CreateVideoEndpoint)
+		if inc == "CreateUser" {
+			e.CreateUserEndpoint = middleware("CreateUser", e.CreateUserEndpoint)
 		}
-		if inc == "GetVideo" {
-			e.GetVideoEndpoint = middleware("GetVideo", e.GetVideoEndpoint)
+		if inc == "GetUser" {
+			e.GetUserEndpoint = middleware("GetUser", e.GetUserEndpoint)
 		}
-		if inc == "GetVideoList" {
-			e.GetVideoListEndpoint = middleware("GetVideoList", e.GetVideoListEndpoint)
+		if inc == "UpdateUser" {
+			e.UpdateUserEndpoint = middleware("UpdateUser", e.UpdateUserEndpoint)
 		}
-		if inc == "UpdateVideo" {
-			e.UpdateVideoEndpoint = middleware("UpdateVideo", e.UpdateVideoEndpoint)
-		}
-		if inc == "DeleteVideo" {
-			e.DeleteVideoEndpoint = middleware("DeleteVideo", e.DeleteVideoEndpoint)
+		if inc == "Login" {
+			e.LoginEndpoint = middleware("Login", e.LoginEndpoint)
 		}
 	}
 }

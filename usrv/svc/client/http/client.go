@@ -3,7 +3,7 @@
 // Version: 68ba2c3132
 // Version Date: 2021-06-08T17:59:18Z
 
-// Package http provides an HTTP client for the VideoService service.
+// Package http provides an HTTP client for the UserService service.
 package http
 
 import (
@@ -22,8 +22,8 @@ import (
 	"github.com/pkg/errors"
 
 	// This Service
-	pb "mithril-micro/vsrv/pb"
-	"mithril-micro/vsrv/svc"
+	pb "mithril-micro/usrv/pb"
+	"mithril-micro/usrv/svc"
 )
 
 var (
@@ -37,7 +37,7 @@ var (
 // New returns a service backed by an HTTP server living at the remote
 // instance. We expect instance to come from a service discovery system, so
 // likely of the form "host:port".
-func New(instance string, options ...httptransport.ClientOption) (pb.VideoServiceServer, error) {
+func New(instance string, options ...httptransport.ClientOption) (pb.UserServiceServer, error) {
 
 	if !strings.HasPrefix(instance, "http") {
 		instance = "http://" + instance

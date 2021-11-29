@@ -9,8 +9,8 @@ import (
 	"flag"
 
 	// This Service
-	"mithril-micro/vsrv/handlers"
-	"mithril-micro/vsrv/svc/server"
+	"mithril-micro/usrv/handlers"
+	"mithril-micro/usrv/svc/server"
 )
 
 func main() {

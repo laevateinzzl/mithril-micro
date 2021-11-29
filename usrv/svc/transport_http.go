@@ -28,7 +28,7 @@ import (
 	"github.com/pkg/errors"
 
 	// This service
-	pb "mithril-micro/vsrv/pb"
+	pb "mithril-micro/usrv/pb"
 )
 
 const contentType = "application/json; charset=utf-8"
@@ -39,7 +39,7 @@ var (
 	_ = strconv.Atoi
 	_ = httptransport.NewServer
 	_ = ioutil.NopCloser
-	_ = pb.NewVideoServiceClient
+	_ = pb.NewUserServiceClient
 	_ = io.Copy
 	_ = errors.Wrap
 )

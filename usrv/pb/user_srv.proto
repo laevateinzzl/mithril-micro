@@ -1,28 +1,52 @@
 syntax = "proto3";
 
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
 package usrv.pb.user;
-option go_package = "mithril-micro/vsrv/api/gen;vsrvpb";
+
+option go_package = "mithril-micro/usrv/usrvpb";
+option (gogoproto.goproto_registration) = true;
 
 service UserService {
-  rpc CreateUser(CreateUserReq) returns (CreateUserRes);
-  rpc GetUser(GetUserReq) returns (User);
-  rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes);
+  rpc CreateUser(CreateUserReq) returns (CreateUserRes) {
+    option (google.api.http) = {
+      post : "/user"
+      body : "*"
+    };
+  };
+  rpc GetUser(GetUserReq) returns (User) {
+    option (google.api.http) = {
+      get : "/user/{user_id}"
+    };
+  };
+  rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes) {
+    option (google.api.http) = {
+      put : "/user/{user_id}"
+      body : "*"
+    };
+  };
+  rpc Login(LoginReq) returns (LoginRes) {
+    option (google.api.http) = {
+      post : "/user/login"
+      body : "*"
+    };
+  };
+}
+
+enum Gender {
+  None = 0;
+  Male = 1;
+  Female = 2;
 }
 
 message User {
-  int64 user_id = 1;
+  string user_id = 1;
   string email = 2;
-  string password = 3;
   string phone = 4;
   string avatar = 5;
   int64 created_at = 6;
-  enum Gender {
-    None = 0;
-    Male = 1;
-    Female = 2;
-  }
   Gender gender = 7;
-  string nickname = 8;
 }
 
 message CreateUserReq {
@@ -31,12 +55,16 @@ message CreateUserReq {
   string phone = 4;
   string avatar = 5;
   string nickname = 6;
+  Gender gender = 7;
 }
 
-message CreateUserRes { string msg = 1; }
+message CreateUserRes {
+  bool ok = 1;
+  string msg = 2;
+}
 
 message UpdateUserReq {
-  int64 user_id = 1;
+  string user_id = 1;
   string email = 2;
   string password = 3;
   string phone = 4;
@@ -46,6 +74,16 @@ message UpdateUserReq {
 
 message UpdateUserRes { bool ok = 1; }
 
-message GetUserReq { int64 user_id = 1; }
+message GetUserReq { string user_id = 1; }
 
 message GetUserRes { User user = 1; }
+
+message LoginReq {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginRes {
+  bool ok = 1;
+  string msg = 2;
+}

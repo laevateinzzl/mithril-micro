@@ -5,11 +5,11 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/golang/glog"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc"
-
 	vsrvpb "mithril-micro/vsrv/pb"
+
+	"github.com/golang/glog"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
 )
 
 // func main() {

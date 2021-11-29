@@ -1,13 +1,20 @@
 syntax = "proto3";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-package vsrv.pb.video;
-option go_package = "vsrvpb";
+import "google/api/annotations.proto";
 
+package vsrv.pb.video;
+
+option go_package = "mithril/vsrv/vsrpb";
 option (gogoproto.goproto_registration) = true;
 
 service VideoService {
-  rpc CreateVideo(CreateVideoReq) returns (Video);
+  rpc CreateVideo(CreateVideoReq) returns (Video) {
+    option (google.api.http) = {
+      post : "/video"
+      body : "*"
+    };
+  };
   rpc GetVideo(GetVideoReq) returns (Video);
   rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes);
   rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes);

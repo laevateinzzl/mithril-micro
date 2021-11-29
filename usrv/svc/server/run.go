@@ -18,9 +18,9 @@ import (
 	"google.golang.org/grpc"
 
 	// This Service
-	"mithril-micro/vsrv/handlers"
-	pb "mithril-micro/vsrv/pb"
-	"mithril-micro/vsrv/svc"
+	"mithril-micro/usrv/handlers"
+	pb "mithril-micro/usrv/pb"
+	"mithril-micro/usrv/svc"
 )
 
 var DefaultConfig svc.Config
@@ -45,7 +45,7 @@ func init() {
 	}
 }
 
-func NewEndpoints(service pb.VideoServiceServer) svc.Endpoints {
+func NewEndpoints(service pb.UserServiceServer) svc.Endpoints {
 	// Business domain.
 
 	// Wrap Service with middlewares. See handlers/middlewares.go
@@ -53,19 +53,17 @@ func NewEndpoints(service pb.VideoServiceServer) svc.Endpoints {
 
 	// Endpoint domain.
 	var (
-		createvideoEndpoint  = svc.MakeCreateVideoEndpoint(service)
-		getvideoEndpoint     = svc.MakeGetVideoEndpoint(service)
-		getvideolistEndpoint = svc.MakeGetVideoListEndpoint(service)
-		updatevideoEndpoint  = svc.MakeUpdateVideoEndpoint(service)
-		deletevideoEndpoint  = svc.MakeDeleteVideoEndpoint(service)
+		createuserEndpoint = svc.MakeCreateUserEndpoint(service)
+		getuserEndpoint    = svc.MakeGetUserEndpoint(service)
+		updateuserEndpoint = svc.MakeUpdateUserEndpoint(service)
+		loginEndpoint      = svc.MakeLoginEndpoint(service)
 	)
 
 	endpoints := svc.Endpoints{
-		CreateVideoEndpoint:  createvideoEndpoint,
-		GetVideoEndpoint:     getvideoEndpoint,
-		GetVideoListEndpoint: getvideolistEndpoint,
-		UpdateVideoEndpoint:  updatevideoEndpoint,
-		DeleteVideoEndpoint:  deletevideoEndpoint,
+		CreateUserEndpoint: createuserEndpoint,
+		GetUserEndpoint:    getuserEndpoint,
+		UpdateUserEndpoint: updateuserEndpoint,
+		LoginEndpoint:      loginEndpoint,
 	}
 
 	// Wrap selected Endpoints with middlewares. See handlers/middlewares.go
@@ -122,7 +120,7 @@ func Run(cfg svc.Config) {
 
 		srv := svc.MakeGRPCServer(endpoints)
 		s := grpc.NewServer()
-		pb.RegisterVideoServiceServer(s, srv)
+		pb.RegisterUserServiceServer(s, srv)
 
 		errc <- s.Serve(ln)
 	}()
