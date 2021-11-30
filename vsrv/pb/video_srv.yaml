@@ -13,6 +13,5 @@ http:
       delete: /vsrv/{video_id}
     - selector: vsrvpb.VideoService.GetVideo
       get: /vsrv/{video_id}
-      response:
     - selector: vsrvpb.VideoService.GetVideoList
       get: /vsrv

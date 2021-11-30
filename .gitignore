@@ -7,3 +7,5 @@ gateway/__debug_bin
 shared/infra1.etcd/
 shared/infra2.etcd/
 shared/infra3.etcd/
+usrv/cmd/userservice/__debug_bin
+vsrv/cmd/videoservice/__debug_bin
