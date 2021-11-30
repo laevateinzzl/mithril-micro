@@ -1,0 +1,16 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: usrvpb.UserService.CreateUser
+      post: /usrv
+      body: "*"
+    - selector: usrvpb.UserService.UpdateUser
+      put: /usrv/{user_id}
+      body: "*"
+    - selector: usrvpb.UserService.Login
+      put: /usrv/login
+      body: "*"
+    - selector: usrvpb.UserService.GetUser
+      get: /usrv/{user_id}

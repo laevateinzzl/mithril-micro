@@ -4,3 +4,6 @@
 vsrv/.vscode/settings.json
 dao/datadir/dump.rdb
 gateway/__debug_bin
+shared/infra1.etcd/
+shared/infra2.etcd/
+shared/infra3.etcd/

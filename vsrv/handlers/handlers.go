@@ -5,14 +5,12 @@ import (
 	"log"
 	"time"
 
+	usrv "mithril-micro/usrv/handlers"
+	usrvpb "mithril-micro/usrv/pb"
 	"mithril-micro/vsrv/dao"
 	pb "mithril-micro/vsrv/pb"
 
-	usrvpb "mithril-micro/usrv/pb"
-	usrv "mithril-micro/usrv/svc/client/grpc"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"google.golang.org/grpc"
 )
 
 // NewService returns a naïve, stateless implementation of Service.
@@ -32,27 +30,31 @@ func (s videoserviceService) CreateVideo(ctx context.Context, in *pb.CreateVideo
 		CreatedAt: time.Now().Unix(),
 		Poster:    in.Poster,
 		Url:       in.Url,
+		User:      &pb.User{},
 	}
 
-	var user *pb.User
-
-	target := ""
-	conn, _ := grpc.Dial(target, grpc.WithInsecure())
-	client, _ := usrv.New(conn)
+	user := &pb.User{}
 
 	req := usrvpb.GetUserReq{
 
 		UserId: in.UserId,
 	}
+	i := usrv.NewUserAgent()
 
-	res, _ := client.GetUser(ctx, &req)
+	res, err := i.UserAgentClient().GetUser(ctx, &req)
 
-	user.Avatar = res.GetAvatar()
-	user.Nickname = res.GetNickname()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	user.Avatar = res.Avatar
+	user.Nickname = res.Nickname
+
+	resp.User = user
 
 	c := dao.NewCl()
 
-	_, err := c.InsertOne(ctx, resp)
+	_, err = c.InsertOne(ctx, resp)
 	if err != nil {
 		log.Fatal(err)
 	}

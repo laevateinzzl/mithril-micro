@@ -8,6 +8,8 @@ import (
 
 // NewService returns a naïve, stateless implementation of Service.
 func NewService() pb.UserServiceServer {
+	r := RegisterToServer()
+	r.Register()
 	return userserviceService{}
 }
 
@@ -20,6 +22,10 @@ func (s userserviceService) CreateUser(ctx context.Context, in *pb.CreateUserReq
 
 func (s userserviceService) GetUser(ctx context.Context, in *pb.GetUserReq) (*pb.User, error) {
 	var resp pb.User
+
+	resp.UserId = in.UserId
+	resp.Avatar = "test"
+
 	return &resp, nil
 }
 

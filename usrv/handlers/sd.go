@@ -5,9 +5,9 @@ import (
 	"io"
 	"time"
 
-	pb "mithril-micro/vsrv/pb"
-	"mithril-micro/vsrv/svc"
-	c "mithril-micro/vsrv/svc/client/grpc"
+	pb "mithril-micro/usrv/pb"
+	"mithril-micro/usrv/svc"
+	c "mithril-micro/usrv/svc/client/grpc"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/sd"
@@ -18,6 +18,11 @@ import (
 )
 
 var etcdAddr []string = []string{"127.0.0.1:12379", "127.0.0.1:22379", "127.0.0.1:32379"}
+
+var (
+	prefix   = "/usrvpb"
+	instance = "127.0.0.1:8872"
+)
 
 func RegisterToServer() *etcdv3.Registrar {
 
@@ -30,42 +35,44 @@ func RegisterToServer() *etcdv3.Registrar {
 	}
 
 	registar := etcdv3.NewRegistrar(etcdClient, etcdv3.Service{
-		Key:   "/vsrv",
-		Value: "127.0.0.1:8882",
+		Key:   prefix,
+		Value: instance,
 		TTL:   &etcdv3.TTLOption{},
 	}, log.NewNopLogger())
 
 	return registar
 }
 
-type VideoAgent struct {
+type UserAgent struct {
 	Instancerm *etcdv3.Instancer
 	Logger     log.Logger
 }
 
-func NewVideoAgent(srv string, logger log.Logger) *VideoAgent {
+func NewUserAgent() *UserAgent {
 
 	options := etcdv3.ClientOptions{
 		DialTimeout:   0,
 		DialKeepAlive: 0,
 	}
 
+	logger := log.NewNopLogger()
+
 	client, err := etcdv3.NewClient(context.Background(), etcdAddr, options)
 	if err != nil {
 		panic(err)
 	}
-	instancerm, err := etcdv3.NewInstancer(client, srv, logger)
+	instancerm, err := etcdv3.NewInstancer(client, prefix, logger)
 
 	if err != nil {
 		panic(err)
 	}
-	return &VideoAgent{
+	return &UserAgent{
 		Instancerm: instancerm,
 		Logger:     logger,
 	}
 }
 
-func (v *VideoAgent) VideoAgentClient() pb.VideoServiceServer {
+func (v *UserAgent) UserAgentClient() pb.UserServiceServer {
 	var (
 		retryMax     = 3
 		retryTimeout = 10 * time.Second
@@ -74,45 +81,38 @@ func (v *VideoAgent) VideoAgentClient() pb.VideoServiceServer {
 	var endpoints svc.Endpoints
 
 	{
-		factory := v.factoryFor(svc.MakeCreateVideoEndpoint)
+		factory := v.factoryFor(svc.MakeCreateUserEndpoint)
 		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
 		balancer := lb.NewRoundRobin(endpointer)
 		retery := lb.Retry(retryMax, retryTimeout, balancer)
-		endpoints.CreateVideoEndpoint = retery
+		endpoints.CreateUserEndpoint = retery
 	}
 	{
-		factory := v.factoryFor(svc.MakeGetVideoEndpoint)
+		factory := v.factoryFor(svc.MakeGetUserEndpoint)
 		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
 		balancer := lb.NewRoundRobin(endpointer)
 		retery := lb.Retry(retryMax, retryTimeout, balancer)
-		endpoints.GetVideoEndpoint = retery
+		endpoints.GetUserEndpoint = retery
 	}
 	{
-		factory := v.factoryFor(svc.MakeGetVideoListEndpoint)
+		factory := v.factoryFor(svc.MakeLoginEndpoint)
 		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
 		balancer := lb.NewRoundRobin(endpointer)
 		retery := lb.Retry(retryMax, retryTimeout, balancer)
-		endpoints.GetVideoListEndpoint = retery
+		endpoints.LoginEndpoint = retery
 	}
 	{
-		factory := v.factoryFor(svc.MakeUpdateVideoEndpoint)
+		factory := v.factoryFor(svc.MakeUpdateUserEndpoint)
 		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
 		balancer := lb.NewRoundRobin(endpointer)
 		retery := lb.Retry(retryMax, retryTimeout, balancer)
-		endpoints.UpdateVideoEndpoint = retery
-	}
-	{
-		factory := v.factoryFor(svc.MakeDeleteVideoEndpoint)
-		endpointer := sd.NewEndpointer(v.Instancerm, factory, v.Logger)
-		balancer := lb.NewRoundRobin(endpointer)
-		retery := lb.Retry(retryMax, retryTimeout, balancer)
-		endpoints.DeleteVideoEndpoint = retery
+		endpoints.UpdateUserEndpoint = retery
 	}
 
 	return endpoints
 }
 
-func (v *VideoAgent) factoryFor(makeEndpoints func(pb.VideoServiceServer) endpoint.Endpoint) sd.Factory {
+func (v *UserAgent) factoryFor(makeEndpoints func(pb.UserServiceServer) endpoint.Endpoint) sd.Factory {
 	return func(instance string) (endpoint.Endpoint, io.Closer, error) {
 		conn, err := grpc.Dial(instance, grpc.WithInsecure())
 		if err != nil {
@@ -123,6 +123,6 @@ func (v *VideoAgent) factoryFor(makeEndpoints func(pb.VideoServiceServer) endpoi
 			panic(err)
 		}
 		endpoints := makeEndpoints(srv)
-		return endpoints, conn, err
+		return endpoints, conn, nil
 	}
 }
