@@ -1,44 +1,17 @@
 syntax = "proto3";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-// import "google/api/annotations.proto";
 
 package usrvpb;
 
 option go_package = "mithril-micro/usrv/usrvpb";
 option (gogoproto.goproto_registration) = true;
 
-// service UserService {
-//   rpc CreateUser(CreateUserReq) returns (CreateUserRes) {
-//     option (google.api.http) = {
-//       post : "/user"
-//       body : "*"
-//     };
-//   };
-//   rpc GetUser(GetUserReq) returns (User) {
-//     option (google.api.http) = {
-//       get : "/user/{user_id}"
-//     };
-//   };
-//   rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes) {
-//     option (google.api.http) = {
-//       put : "/user/{user_id}"
-//       body : "*"
-//     };
-//   };
-//   rpc Login(LoginReq) returns (LoginRes) {
-//     option (google.api.http) = {
-//       post : "/user/login"
-//       body : "*"
-//     };
-//   };
-// }
-
 service UserService {
-  rpc CreateUser(CreateUserReq) returns (CreateUserRes);
-  rpc GetUser(GetUserReq) returns (User);
-  rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes);
-  rpc Login(LoginReq) returns (LoginRes);
+  rpc CreateUser(CreateUserReq) returns (CreateUserRes) {};
+  rpc GetUser(GetUserReq) returns (User) {};
+  rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes) {};
+  rpc Login(LoginReq) returns (LoginRes) {};
 }
 
 enum Gender {

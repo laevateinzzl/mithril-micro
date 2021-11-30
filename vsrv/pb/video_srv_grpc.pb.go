@@ -35,7 +35,7 @@ func NewVideoServiceClient(cc grpc.ClientConnInterface) VideoServiceClient {
 
 func (c *videoServiceClient) CreateVideo(ctx context.Context, in *CreateVideoReq, opts ...grpc.CallOption) (*Video, error) {
 	out := new(Video)
-	err := c.cc.Invoke(ctx, "/vsrv.pb.video.VideoService/CreateVideo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/vsrvpb.VideoService/CreateVideo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (c *videoServiceClient) CreateVideo(ctx context.Context, in *CreateVideoReq
 
 func (c *videoServiceClient) GetVideo(ctx context.Context, in *GetVideoReq, opts ...grpc.CallOption) (*Video, error) {
 	out := new(Video)
-	err := c.cc.Invoke(ctx, "/vsrv.pb.video.VideoService/GetVideo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/vsrvpb.VideoService/GetVideo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (c *videoServiceClient) GetVideo(ctx context.Context, in *GetVideoReq, opts
 
 func (c *videoServiceClient) GetVideoList(ctx context.Context, in *GetVideoListReq, opts ...grpc.CallOption) (*GetVideoListRes, error) {
 	out := new(GetVideoListRes)
-	err := c.cc.Invoke(ctx, "/vsrv.pb.video.VideoService/GetVideoList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/vsrvpb.VideoService/GetVideoList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (c *videoServiceClient) GetVideoList(ctx context.Context, in *GetVideoListR
 
 func (c *videoServiceClient) UpdateVideo(ctx context.Context, in *UpdateVideoReq, opts ...grpc.CallOption) (*UpdateVideoRes, error) {
 	out := new(UpdateVideoRes)
-	err := c.cc.Invoke(ctx, "/vsrv.pb.video.VideoService/UpdateVideo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/vsrvpb.VideoService/UpdateVideo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (c *videoServiceClient) UpdateVideo(ctx context.Context, in *UpdateVideoReq
 
 func (c *videoServiceClient) DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoRes, error) {
 	out := new(DeleteVideoRes)
-	err := c.cc.Invoke(ctx, "/vsrv.pb.video.VideoService/DeleteVideo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/vsrvpb.VideoService/DeleteVideo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func _VideoService_CreateVideo_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/vsrv.pb.video.VideoService/CreateVideo",
+		FullMethod: "/vsrvpb.VideoService/CreateVideo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).CreateVideo(ctx, req.(*CreateVideoReq))
@@ -148,7 +148,7 @@ func _VideoService_GetVideo_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/vsrv.pb.video.VideoService/GetVideo",
+		FullMethod: "/vsrvpb.VideoService/GetVideo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).GetVideo(ctx, req.(*GetVideoReq))
@@ -166,7 +166,7 @@ func _VideoService_GetVideoList_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/vsrv.pb.video.VideoService/GetVideoList",
+		FullMethod: "/vsrvpb.VideoService/GetVideoList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).GetVideoList(ctx, req.(*GetVideoListReq))
@@ -184,7 +184,7 @@ func _VideoService_UpdateVideo_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/vsrv.pb.video.VideoService/UpdateVideo",
+		FullMethod: "/vsrvpb.VideoService/UpdateVideo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).UpdateVideo(ctx, req.(*UpdateVideoReq))
@@ -202,7 +202,7 @@ func _VideoService_DeleteVideo_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/vsrv.pb.video.VideoService/DeleteVideo",
+		FullMethod: "/vsrvpb.VideoService/DeleteVideo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).DeleteVideo(ctx, req.(*DeleteVideoReq))
@@ -214,7 +214,7 @@ func _VideoService_DeleteVideo_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var VideoService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "vsrv.pb.video.VideoService",
+	ServiceName: "vsrvpb.VideoService",
 	HandlerType: (*VideoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

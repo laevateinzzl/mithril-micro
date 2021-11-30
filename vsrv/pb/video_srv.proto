@@ -1,24 +1,18 @@
 syntax = "proto3";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "google/api/annotations.proto";
 
-package vsrv.pb.video;
+package vsrvpb;
 
-option go_package = "mithril/vsrv/vsrpb";
+option go_package = "mithril-micro/vsrv/vsrpb";
 option (gogoproto.goproto_registration) = true;
 
 service VideoService {
-  rpc CreateVideo(CreateVideoReq) returns (Video) {
-    option (google.api.http) = {
-      post : "/video"
-      body : "*"
-    };
-  };
-  rpc GetVideo(GetVideoReq) returns (Video);
-  rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes);
-  rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes);
-  rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes);
+  rpc CreateVideo(CreateVideoReq) returns (Video) {};
+  rpc GetVideo(GetVideoReq) returns (Video) {};
+  rpc GetVideoList(GetVideoListReq) returns (GetVideoListRes) {};
+  rpc UpdateVideo(UpdateVideoReq) returns (UpdateVideoRes) {};
+  rpc DeleteVideo(DeleteVideoReq) returns (DeleteVideoRes) {};
 }
 
 enum Gender {
