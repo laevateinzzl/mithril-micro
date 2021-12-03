@@ -15,6 +15,7 @@ PROTO_PATH=./
 GO_OUT_PATH=./
 
 # protoc -I=$PROTO_PATH -I=$GOPATH/src -I=$GOPATH/src/mithril-micro/shared/third_party_pb/ --gogo_out=plugins=grpc,paths=source_relative,--grpc-gateway_out=allow_patch_feature=false,paths=source_relative:$GO_OUT_PATH video_srv.proto
+truss video_srv.proto --svcout ..
 protoc -I=$PROTO_PATH -I=$GOPATH/src -I=$GOPATH/src/mithril-micro/shared/third_party_pb/ --go_out=paths=source_relative:$GO_OUT_PATH video_srv.proto
 protoc -I=$PROTO_PATH -I=$GOPATH/src -I=$GOPATH/src/mithril-micro/shared/third_party_pb/ --go-grpc_out=require_unimplemented_servers=false,paths=source_relative:$GO_OUT_PATH video_srv.proto
 protoc -I=$PROTO_PATH -I=$GOPATH/src -I=$GOPATH/src/mithril-micro/shared/third_party_pb/ --grpc-gateway_out=allow_patch_feature=true,paths=source_relative:$GO_OUT_PATH video_srv.proto

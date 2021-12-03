@@ -36,7 +36,6 @@ func (s videoserviceService) CreateVideo(ctx context.Context, in *pb.CreateVideo
 	user := &pb.User{}
 
 	req := usrvpb.GetUserReq{
-
 		UserId: in.UserId,
 	}
 	i := usrv.NewUserAgent()

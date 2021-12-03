@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"io"
+	"os"
 	"time"
 
 	pb "mithril-micro/usrv/pb"
@@ -21,7 +22,7 @@ var etcdAddr []string = []string{"127.0.0.1:12379", "127.0.0.1:22379", "127.0.0.
 
 var (
 	prefix   = "/usrvpb"
-	instance = "127.0.0.1:8872"
+	instance = "127.0.0.1" + os.Getenv("GRPC_ADDR")
 )
 
 func RegisterToServer() *etcdv3.Registrar {
@@ -35,7 +36,7 @@ func RegisterToServer() *etcdv3.Registrar {
 	}
 
 	registar := etcdv3.NewRegistrar(etcdClient, etcdv3.Service{
-		Key:   prefix,
+		Key:   prefix + os.Getenv("GRPC_ADDR"),
 		Value: instance,
 		TTL:   &etcdv3.TTLOption{},
 	}, log.NewNopLogger())
